@@ -21,18 +21,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        System.out.println("hello3");
-
         http
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers("/api/v1/auth/**").permitAll()
-                                .anyRequest().authenticated()
                 )
+                .authorizeHttpRequests(authHttpReq -> authHttpReq.anyRequest().authenticated())
                 .sessionManagement((sessionManagement) ->
                                 sessionManagement
-                                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
