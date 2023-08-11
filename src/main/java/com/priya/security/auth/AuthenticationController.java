@@ -2,6 +2,7 @@ package com.priya.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,13 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    @PostMapping("/logout")
+    public void logout(
+            @RequestBody AuthenticationRequest request
+    ) {
+        SecurityContextHolder.clearContext();
     }
 
     @GetMapping("/hello")
